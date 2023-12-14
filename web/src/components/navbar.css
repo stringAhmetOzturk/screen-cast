@@ -1,0 +1,56 @@
+nav {
+    background-color: #471782;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between; /* Space items evenly along the main axis */
+    align-items: center; 
+    box-shadow: 0 6px 10px rgb(0 0 0 / 0.2);
+}
+.menuIcon{
+    margin: 0;
+    display: none;
+}
+@media (max-width:600px) {
+    .menuIcon{
+        display: block;
+    }
+}
+@media (max-width:600px) {
+    nav ul, nav .icons{
+        display: none;
+    }
+}
+.icons{
+    display: flex;
+    align-items: flex-end;
+}
+.icons span{
+   margin: 0;
+   margin-left: 10px;
+}
+/* Style the list (remove bullet points) */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Style the list items (menu items) */
+li {
+    display: inline; /* Display menu items horizontally */
+    margin-right: 20px; /* Add spacing between menu items */
+}
+
+/* Style the links */
+a {
+    text-decoration: none; /* Remove underline from links */
+    color: #fff; /* Text color for links */
+    font-weight: bold; /* Make the text bold */
+    transition: color 0.7s ease; 
+    font-size: 13px;
+}
+
+/* Change link color on hover */
+a:hover {
+    color: #110026;; /* Change text color on hover */
+}

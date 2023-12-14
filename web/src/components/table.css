@@ -1,0 +1,21 @@
+/* Style the button */
+.homeButton {
+    margin-top: 5px;
+    background-color: #46009c;
+    text-transform: uppercase;
+    padding: 10px;
+    font-weight: bold;
+    width: 100%;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* Style the button hover effect */
+button:hover {
+    background-color: #23004d;
+    color: #fff;
+}

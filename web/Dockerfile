@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # # Expose the port on which the React application will run
-# EXPOSE $REACT_APP_FRONTEND_PORT
+EXPOSE $REACT_APP_FRONTEND_PORT
 
 # Start the application
 CMD ["npm", "start"]

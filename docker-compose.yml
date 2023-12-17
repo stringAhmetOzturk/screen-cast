@@ -23,6 +23,21 @@ services:
     networks:
       - internalnet
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    depends_on:
+      - mysqldb
+    environment:
+      PMA_HOST: mysqldb
+      PMA_PORT: 3306
+      PMA_USER: "${DB_USER}"
+      PMA_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - "3333:80"
+    networks:
+      - internalnet
+
   nodeapp:
     container_name: nodeappcontainer
     build: ./server

@@ -28,16 +28,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, "public")));
+
+app.use(express.static(path.join(__dirname, "public")));
+
 const server = http.createServer(app); // Rename http to server
 const ioServer = new socketIO(server);
 
 const io = ioServer;
 
 const saltRounds = 10;
-app.get("/",(req,res)=>{
-  res.send("Welcome to roboticapp api!")
-})
+
+// app.get("/",(req,res)=>{
+//   res.send("Welcome to roboticapp api!")
+// })
+
 //api token validation
 app.use(validateToken);
 
@@ -67,7 +71,7 @@ app.post("/api/login", (req, res) => {
       const q = "SELECT * FROM admin WHERE username = ?";
       db.query(q, username, (error, data) => {
         if (error || data.length === 0) {
-          res.status(400).json({ message: "Username not found!" });
+          res.status(400).json({ message: "Username not found!", error });
         } else {
           bcrypt.compare(password, data[0].password, (err, result) => {
             if (err) {
@@ -117,7 +121,7 @@ app.get("/api/get-students", (req, res) => {
       "SELECT students.id,students.name,students.surname,students.studentId,students.secretKey,connectiontime.date,connectiontime.minute FROM students LEFT JOIN connectiontime ON connectiontime.studentId = students.studentId";
     db.query(q, (error, data) => {
       if (error) {
-   
+
         res.status(400).json({ message: "Error" });
       } else {
         res.send(data);
@@ -278,7 +282,7 @@ io.on("connection", (socket) => {
       positionY: y,
     };
     try {
-  
+
       if (y < 550) {
         io.emit("screen-click-received", position);
       }

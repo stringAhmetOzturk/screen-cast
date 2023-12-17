@@ -1,7 +1,7 @@
 
 import { useSelector } from "react-redux";
 import { selectCurrentToken } from "./redux/authReducer";
-import {BrowserRouter,Routes,Route} from "react-router-dom"
+import {HashRouter,Routes,Route} from "react-router-dom"
 import Home from './pages/home/Home';
 import Add from './pages/add/Add';
 import Assign from './pages/assign/Assign';
@@ -14,15 +14,15 @@ function App() {
 
   return (
     //admin için şifre değiştirme kısmı
-      <BrowserRouter>
-        <Routes>
+      <HashRouter>
+        <Routes >
             <Route path="/" element={user ? <Home/> : <Login/>}/>
             <Route path="/add" element={user ? <Add/> : <Login/>}/>
             <Route path="/assign" element={user ? <Assign/> : <Login/>}/>
             <Route path="/profile" element={user ? <Profile/> : <Login/>}/>
             <Route path='/view' element={<ScreenCast/>}/>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
   );
 }
 

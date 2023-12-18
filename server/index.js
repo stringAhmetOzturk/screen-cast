@@ -272,6 +272,7 @@ io.on("connection", (socket) => {
     socket.join(roomId);
   });
   socket.on("screen-click", (data) => {
+    console.log("Screen click geldi!")
     var clickData = JSON.parse(data);
 
     // Extract the x and y coordinates from the parsed data
@@ -284,6 +285,7 @@ io.on("connection", (socket) => {
     try {
 
       if (y < 550) {
+        console.log("Masaüstüne screen click gönderildi!")
         io.emit("screen-click-received", position);
       }
     } catch (error) {
@@ -302,6 +304,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("screen-right-click", (data) => {
+    console.log("Screen right click geldi!")
     var clickData = JSON.parse(data);
 
     // Extract the x and y coordinates from the parsed data
@@ -313,6 +316,7 @@ io.on("connection", (socket) => {
     };
     try {
       if (y < 550) {
+        console.log("Masaüstüne screen right click gönderildi!")
         io.emit("screen-right-click-received", position);
       }
     } catch (error) {
@@ -323,9 +327,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("code-message", function (data) {
+    console.log("Text geldi!")
     data = JSON.parse(data);
     var text = data.text;
     try {
+      console.log("Masaüstüne text yollandı!")
       io.emit("textReceived", text);
     } catch (error) {
       throw "Error on text.";

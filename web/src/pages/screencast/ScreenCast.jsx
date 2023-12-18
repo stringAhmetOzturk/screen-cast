@@ -14,6 +14,7 @@ function ScreenCast() {
     const newSocket = io.connect(process.env.REACT_APP_SOCKET_URL, {
       path: "",
       transports: ["websocket"],
+      
     });
 
     setSocket(newSocket);
@@ -72,10 +73,10 @@ function ScreenCast() {
       };
 
       if (event.button === 2) {
-
+        console.log("Sockete sağ click gönderildi")
         socket.emit("screen-right-click", JSON.stringify(clickData));
       } else {
-
+        console.log("Sockete sol click gönderildi")
         socket.emit("screen-click", JSON.stringify(clickData));
       }
     });
@@ -88,8 +89,9 @@ function ScreenCast() {
       room,
       text,
     };
-
+    console.log(obj)
     socket.emit("code-message", JSON.stringify(obj));
+    console.log("Sockete text gönderildi!")
     setText("");
   };
 
@@ -99,6 +101,8 @@ function ScreenCast() {
     const serverDate = new Date(date)
 
     const currentDate = new Date()
+    
+    currentDate.setHours(currentDate.getHours() + 1);
 
     const minuteParts = minute.split(":");
     const minuteInMinutes =
@@ -224,7 +228,7 @@ function ScreenCast() {
           <p>
             Waiting for server to share screen.
             <br />
-            You can contact with admin!
+            You can contact with the teacher!
           </p>
           <CircularProgress color="secondary" />
         </div>

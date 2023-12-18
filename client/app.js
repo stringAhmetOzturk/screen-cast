@@ -5,12 +5,25 @@ const io = require("socket.io-client");
 const robot = require("@jitsi/robotjs");
 const fs = require("fs");
 const os = require("os");
+const path = require("path")
 const dotenv = require("dotenv");
 
 dotenv.config();
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 var requestLoop = false;
-const socket = io("https://e-sets.ina-codes.eu");
+const socket = io.connect("https://e-sets.ina-codes.eu",{
+  transports: ["websocket"],
+});
+
+socket.on("connect", () => {
+  console.log("Socket connected");
+});
+
+// Event handler for connection error
+socket.on("connect_error", (error) => {
+  console.error("Socket connection error:", error);
+  // Additional logic if needed when connection error occurs
+});
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -19,11 +32,12 @@ function createWindow() {
     resizable: false,
     autoHideMenuBar: true,
     webPreferences: {
-      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js')
     },
   });
 
-  //win.webContents.openDevTools(), win.removeMenu();
+  // win.webContents.openDevTools(),
+   win.removeMenu();
   win.loadFile("index.html");
 }
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -76,14 +90,12 @@ ipcMain.on("start-share", function (event, arg) {
 
   // Sunucudan gelen yanıtı dinlemek
   socket.on("textReceived", (response) => {
-    console.log("textReceived")
     if (requestLoop) {
       try {
         
         const desktopPath = os.homedir() + "/Desktop";
         const outputFolderPath = desktopPath + "/output";
         const outputFilePath = outputFolderPath + "/output.ino";
-        console.log(outputFilePath)
         // Eğer "output" klasörü yoksa oluştur
         if (!fs.existsSync(outputFolderPath)) {
           fs.mkdirSync(outputFolderPath);
@@ -104,7 +116,6 @@ ipcMain.on("start-share", function (event, arg) {
   });
 
   socket.on("screen-click-received", (response) => {
-    console.log("screen-click-received")
     if (requestLoop) {
       try {
         // Bu, gelen pozisyonu ekranın boyutlarına göre dönüştürür
@@ -117,7 +128,6 @@ ipcMain.on("start-share", function (event, arg) {
         robot.moveMouse(clickX, clickY);
         robot.mouseClick("left", false); // Bu, sol tıklamayı gerçekleştirir
         robot.mouseClick("left", false); // Bu, sol tıklamayı gerçekleştirir
-        console.log("Clicked")
       } catch (error) {
         throw "Hata oluştu.";
       }
@@ -125,7 +135,6 @@ ipcMain.on("start-share", function (event, arg) {
   });
 
   socket.on("screen-right-click-received", (response) => {
-    console.log("screen-right-click-received")
     if (requestLoop) {
       try {
         // Bu, gelen pozisyonu ekranın boyutlarına göre dönüştürür
@@ -137,7 +146,6 @@ ipcMain.on("start-share", function (event, arg) {
         robot.moveMouse(clickX, clickY);
         robot.mouseClick("left", false); // Bu, sol tıklamayı gerçekleştirir
         robot.mouseClick("right", false); // This will perform a left double click
-        console.log("Clicked")
       } catch (error) {
         throw "Error on text.";
       }
